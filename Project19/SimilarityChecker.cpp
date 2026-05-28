@@ -12,10 +12,10 @@ public:
 
 private:
     void Validate(const std::string& str) {
-        bool isValid = std::all_of(str.begin(), str.end(), [](char c) {
-            return c >= 'A' && c <= 'Z';
+        auto it = std::find_if(str.begin(), str.end(), [](char c) {
+            return !(c >= 'A' && c <= 'Z');
         });
-        if (!isValid)
-            throw std::invalid_argument("Input must contain only uppercase letters.");
+        if (it != str.end())
+            throw std::invalid_argument(std::string("Invalid character '") + *it + "': only uppercase letters are allowed.");
     }
 };
