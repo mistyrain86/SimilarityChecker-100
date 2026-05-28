@@ -1,34 +1,23 @@
 #include "gmock/gmock.h"
 #include "SimilarityChecker.cpp"
 
-using StringPair = std::pair<std::string, std::string>;
-
-class InvalidInputTest : public ::testing::TestWithParam<StringPair> {
+class SimilarityCheckerTest : public ::testing::Test {
 protected:
     SimilarityChecker checker;
 };
 
-TEST_P(InvalidInputTest, ThrowWhenInputIsNotUpperCase) {
-    auto [a, b] = GetParam();
-    EXPECT_THROW(checker.Calculate(a, b), std::invalid_argument);
+TEST_F(SimilarityCheckerTest, ThrowWhenInputHasLowerCase) {
+    EXPECT_THROW(checker.Calculate("abc", "ABC"), std::invalid_argument);
 }
 
-INSTANTIATE_TEST_SUITE_P(
-    NonUpperCaseInputs,
-    InvalidInputTest,
-    ::testing::Values(
-        StringPair{ "abc", "ABC" },
-        StringPair{ "A1B", "AB"  },
-        StringPair{ "A B", "AB"  },
-        StringPair{ "A!B", "AB"  }
-    ),
-    [](const ::testing::TestParamInfo<StringPair>&info) -> std::string {
-        switch (info.index) {
-            case 0: return "LowerCase";
-            case 1: return "Number";
-            case 2: return "Space";
-            case 3: return "SpecialChar";
-            default: return "Unknown";
-        }
-    }
-);
+TEST_F(SimilarityCheckerTest, ThrowWhenInputHasNumber) {
+    EXPECT_THROW(checker.Calculate("A1B", "AB"), std::invalid_argument);
+}
+
+TEST_F(SimilarityCheckerTest, ThrowWhenInputHasSpace) {
+    EXPECT_THROW(checker.Calculate("A B", "AB"), std::invalid_argument);
+}
+
+TEST_F(SimilarityCheckerTest, ThrowWhenInputHasSpecialChar) {
+    EXPECT_THROW(checker.Calculate("A!B", "AB"), std::invalid_argument);
+}
