@@ -6,18 +6,9 @@ protected:
     SimilarityChecker checker;
 };
 
-TEST_F(SimilarityCheckerTest, ThrowWhenInputHasLowerCase) {
-    EXPECT_THROW(checker.Calculate("abc", "ABC"), std::invalid_argument);
-}
-
-TEST_F(SimilarityCheckerTest, ThrowWhenInputHasNumber) {
-    EXPECT_THROW(checker.Calculate("A1B", "AB"), std::invalid_argument);
-}
-
-TEST_F(SimilarityCheckerTest, ThrowWhenInputHasSpace) {
-    EXPECT_THROW(checker.Calculate("A B", "AB"), std::invalid_argument);
-}
-
-TEST_F(SimilarityCheckerTest, ThrowWhenInputHasSpecialChar) {
-    EXPECT_THROW(checker.Calculate("A!B", "AB"), std::invalid_argument);
+TEST_F(SimilarityCheckerTest, ThrowWhenInputIsNotUpperCase) {
+    EXPECT_THROW(checker.Calculate("abc", "ABC"), std::invalid_argument);  // 소문자
+    EXPECT_THROW(checker.Calculate("A1B", "AB"),  std::invalid_argument);  // 숫자
+    EXPECT_THROW(checker.Calculate("A B", "AB"),  std::invalid_argument);  // 공백
+    EXPECT_THROW(checker.Calculate("A!B", "AB"),  std::invalid_argument);  // 특수문자
 }
