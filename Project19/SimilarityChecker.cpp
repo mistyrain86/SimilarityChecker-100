@@ -29,7 +29,7 @@ private:
         if (longer >= shorter * 2)
             return 0;
 
-        int gap = longer - shorter;
-        return static_cast<int>((1.0 - (double)gap / shorter) * 60);
+        double ratio = 1.0 - static_cast<double>(longer - shorter) / shorter;
+        return static_cast<int>(ratio * 60);
     }
 };
