@@ -1,5 +1,6 @@
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 
 class SimilarityChecker {
 public:
@@ -11,9 +12,10 @@ public:
 
 private:
     void Validate(const std::string& str) {
-        for (char c : str) {
-            if (c < 'A' || c > 'Z')
-                throw std::invalid_argument("Input must contain only uppercase letters.");
-        }
+        bool isValid = std::all_of(str.begin(), str.end(), [](char c) {
+            return c >= 'A' && c <= 'Z';
+        });
+        if (!isValid)
+            throw std::invalid_argument("Input must contain only uppercase letters.");
     }
 };
